@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttle/components/word_board.dart';
 import 'package:fluttle/state/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,17 +31,25 @@ class MyHomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useState(
+      () {
+        ref.read(gameStateNotifierProvider.notifier).initialiseGame();
+
+        return null;
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
       body: const Center(
-        child: WordBoard(),
+        child: SingleChildScrollView(reverse: true, child: WordBoard()),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(gameStateNotifierProvider.notifier).initialiseGame(),
-        tooltip: 'Increment',
+        onPressed: () => ref.read(gameStateNotifierProvider.notifier).submitGuess(),
+        tooltip: 'Guess random word',
         child: const Icon(Icons.add),
       ),
     );

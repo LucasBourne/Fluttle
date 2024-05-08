@@ -8,23 +8,35 @@ class GameStateProvider extends StateNotifier<GameState> {
   final _wordGenerator = WordGenerator();
 
   void initialiseGame() {
+    state = GameState.inProgress(word: _getRandomWord);
+  }
+
+  void submitGuess([String? guess]) {
+    if (state.word == null) {
+      initialiseGame();
+    }
+    final existingGuesses = List<String>.from(state.guesses);
+
+    if (guess == null) {
+      existingGuesses.add(_getRandomWord);
+    } else {
+      existingGuesses.add(guess);
+    }
+    // if (guess == state.word) {
+    //   state = GameState.win();
+    // } else if (state.guesses.length >= 6) {
+    //   state = GameState.lose();
+    // }
+    state = GameState.inProgress(word: state.word!, guesses: existingGuesses);
+  }
+
+  String get _getRandomWord {
     String newWord = '';
 
     while (newWord.length != 5) {
       newWord = _wordGenerator.randomNoun();
     }
 
-    state = GameState.inProgress(word: newWord);
-  }
-
-  void submitGuess(String guess) {
-    final existingGuesses = List<String>.from(state.guesses);
-
-    existingGuesses.add(guess);
-    if (guess == state.word) {
-      state = GameState.win();
-    } else if (state.guesses.length >= 6) {
-      state = GameState.lose();
-    }
+    return newWord;
   }
 }

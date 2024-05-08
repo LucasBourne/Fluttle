@@ -8,9 +8,7 @@ class WordBoard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Grab guesses
-    // final guesses = ref.watch(gameStateNotifierProvider).guesses;
-    final guesses = ['yeast', 'build', 'crown'];
+    final guesses = ref.watch(gameStateNotifierProvider).guesses;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
