@@ -10,9 +10,12 @@ class LetterTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
-      color: _color,
+      width: 75,
+      height: 75,
+      decoration: BoxDecoration(
+        color: _color,
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
       child: Center(
         child: Text(letter),
       ),
@@ -25,7 +28,7 @@ class LetterTile extends StatelessWidget {
     } else if (wordContainsLetter) {
       return Colors.amber;
     } else {
-      return null;
+      return Colors.black12;
     }
   }
 }

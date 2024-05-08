@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$GameState {
   String? get word => throw _privateConstructorUsedError;
   List<String> get guesses => throw _privateConstructorUsedError;
+  Map<String, List<String>> get submittedKeys =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
@@ -29,7 +31,10 @@ abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res, GameState>;
   @useResult
-  $Res call({String? word, List<String> guesses});
+  $Res call(
+      {String? word,
+      List<String> guesses,
+      Map<String, List<String>> submittedKeys});
 }
 
 /// @nodoc
@@ -47,6 +52,7 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   $Res call({
     Object? word = freezed,
     Object? guesses = null,
+    Object? submittedKeys = null,
   }) {
     return _then(_value.copyWith(
       word: freezed == word
@@ -57,6 +63,10 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
           ? _value.guesses
           : guesses // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      submittedKeys: null == submittedKeys
+          ? _value.submittedKeys
+          : submittedKeys // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<String>>,
     ) as $Val);
   }
 }
@@ -69,7 +79,10 @@ abstract class _$$GameStateImplCopyWith<$Res>
       __$$GameStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? word, List<String> guesses});
+  $Res call(
+      {String? word,
+      List<String> guesses,
+      Map<String, List<String>> submittedKeys});
 }
 
 /// @nodoc
@@ -85,6 +98,7 @@ class __$$GameStateImplCopyWithImpl<$Res>
   $Res call({
     Object? word = freezed,
     Object? guesses = null,
+    Object? submittedKeys = null,
   }) {
     return _then(_$GameStateImpl(
       word: freezed == word
@@ -95,6 +109,10 @@ class __$$GameStateImplCopyWithImpl<$Res>
           ? _value._guesses
           : guesses // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      submittedKeys: null == submittedKeys
+          ? _value._submittedKeys
+          : submittedKeys // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<String>>,
     ));
   }
 }
@@ -102,8 +120,12 @@ class __$$GameStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GameStateImpl implements _GameState {
-  const _$GameStateImpl({this.word, final List<String> guesses = const []})
-      : _guesses = guesses;
+  const _$GameStateImpl(
+      {this.word,
+      final List<String> guesses = const [],
+      final Map<String, List<String>> submittedKeys = const {}})
+      : _guesses = guesses,
+        _submittedKeys = submittedKeys;
 
   @override
   final String? word;
@@ -116,9 +138,18 @@ class _$GameStateImpl implements _GameState {
     return EqualUnmodifiableListView(_guesses);
   }
 
+  final Map<String, List<String>> _submittedKeys;
+  @override
+  @JsonKey()
+  Map<String, List<String>> get submittedKeys {
+    if (_submittedKeys is EqualUnmodifiableMapView) return _submittedKeys;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_submittedKeys);
+  }
+
   @override
   String toString() {
-    return 'GameState(word: $word, guesses: $guesses)';
+    return 'GameState(word: $word, guesses: $guesses, submittedKeys: $submittedKeys)';
   }
 
   @override
@@ -127,12 +158,17 @@ class _$GameStateImpl implements _GameState {
         (other.runtimeType == runtimeType &&
             other is _$GameStateImpl &&
             (identical(other.word, word) || other.word == word) &&
-            const DeepCollectionEquality().equals(other._guesses, _guesses));
+            const DeepCollectionEquality().equals(other._guesses, _guesses) &&
+            const DeepCollectionEquality()
+                .equals(other._submittedKeys, _submittedKeys));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, word, const DeepCollectionEquality().hash(_guesses));
+      runtimeType,
+      word,
+      const DeepCollectionEquality().hash(_guesses),
+      const DeepCollectionEquality().hash(_submittedKeys));
 
   @JsonKey(ignore: true)
   @override
@@ -142,13 +178,17 @@ class _$GameStateImpl implements _GameState {
 }
 
 abstract class _GameState implements GameState {
-  const factory _GameState({final String? word, final List<String> guesses}) =
-      _$GameStateImpl;
+  const factory _GameState(
+      {final String? word,
+      final List<String> guesses,
+      final Map<String, List<String>> submittedKeys}) = _$GameStateImpl;
 
   @override
   String? get word;
   @override
   List<String> get guesses;
+  @override
+  Map<String, List<String>> get submittedKeys;
   @override
   @JsonKey(ignore: true)
   _$$GameStateImplCopyWith<_$GameStateImpl> get copyWith =>

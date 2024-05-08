@@ -18,10 +18,13 @@ class WordRow extends HookConsumerWidget {
         (letter) {
           final letterIndex = guess.characters.toList().indexOf(letter);
 
-          return LetterTile(
-            letter,
-            isInCorrectLocation: letter == gameState.word?[letterIndex],
-            wordContainsLetter: gameState.word?.contains(letter) ?? false,
+          return Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: LetterTile(
+              letter,
+              isInCorrectLocation: letter == gameState.word?[letterIndex],
+              wordContainsLetter: gameState.word?.contains(letter) ?? false,
+            ),
           );
         },
       ).toList(),
