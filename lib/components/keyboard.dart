@@ -4,7 +4,9 @@ import 'package:fluttle/state/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Keyboard extends HookConsumerWidget {
-  const Keyboard({super.key});
+  const Keyboard(this.controller, {super.key});
+
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,7 +36,8 @@ class Keyboard extends HookConsumerWidget {
     return _buildRow(letters, state, leftOffset: 50);
   }
 
-  Widget _buildRow(List<String> letters, GameState state, {double? leftOffset}) {
+  Widget _buildRow(List<String> letters, GameState state,
+      {double? leftOffset}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -54,7 +57,15 @@ class Keyboard extends HookConsumerWidget {
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
-                  child: Center(child: Text(letter)),
+                  child: InkWell(
+                    onTap: () {
+                      final text = controller.value.text;
+                      controller.text = '$text$letter';
+                    },
+                    child: Center(
+                      child: Text(letter),
+                    ),
+                  ),
                 ),
               ),
             )

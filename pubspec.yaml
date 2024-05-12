@@ -29,6 +29,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   hooks_riverpod: ^2.5.1
   word_generator: ^0.4.4
+  scrabble_word_checker: ^0.0.8
 
 dev_dependencies:
   flutter_test:

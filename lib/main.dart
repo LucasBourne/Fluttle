@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fluttle/components/word_board.dart';
 import 'package:fluttle/state/providers.dart';
 import 'package:fluttle/views/game_board.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -40,7 +39,7 @@ class MyHomePage extends HookConsumerWidget {
     );
 
     return Scaffold(
-      body: const GameBoard(),
+      body: GameBoard(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => ref.read(gameStateNotifierProvider.notifier).submitGuess(),
         tooltip: 'Stuck? Try a random word',

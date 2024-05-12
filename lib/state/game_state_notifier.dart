@@ -1,11 +1,14 @@
 import 'package:fluttle/repos/random_word_interface.dart';
 import 'package:fluttle/state/game_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:scrabble_word_checker/scrabble_word_checker.dart';
 
 class GameStateNotifier extends StateNotifier<GameState> {
   GameStateNotifier(this._randomWordRepo) : super(GameState.initial());
 
   final RandomWordInterface _randomWordRepo;
+
+  final _wordChecker = ScrabbleWordChecker(language: ScrabbleLanguage.english);
 
   void initialiseGame() {
     state = GameState.inProgress(
@@ -20,18 +23,21 @@ class GameStateNotifier extends StateNotifier<GameState> {
       initialiseGame();
     }
     final existingGuesses = List<String>.from(state.guesses);
-    final randomWord = _randomWordRepo.generateRandomWord();
 
-    if (guess == null) {
-      existingGuesses.add(randomWord);
-    } else {
-      existingGuesses.add(guess);
+    final guessToSubmit =
+        guess?.substring(0, 5) ?? _randomWordRepo.generateRandomWord();
+
+    if (!_wordChecker.isValidWord(guessToSubmit)) {
+      return;
     }
 
-    final newSubmittedKeys = Map<String, List<String>>.from(state.submittedKeys);
+    existingGuesses.add(guessToSubmit);
 
-    for (var i = 0; i < randomWord.length; i++) {
-      final guessLetter = randomWord[i];
+    final newSubmittedKeys =
+        Map<String, List<String>>.from(state.submittedKeys);
+
+    for (var i = 0; i < guessToSubmit.length; i++) {
+      final guessLetter = guessToSubmit[i];
       if (state.word![i] == guessLetter) {
         newSubmittedKeys[greenKeys]!.add(guessLetter);
       } else if (state.word!.contains(guessLetter)) {

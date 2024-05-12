@@ -12,22 +12,26 @@ class WordRow extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gameState = ref.watch(gameStateNotifierProvider);
 
+    final letters = <Widget>[];
+
+    for (int i = 0; i < guess.characters.length; i++) {
+      final letter = guess.characters.toList()[i];
+
+      letters.add(
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: LetterTile(
+            letter,
+            isInCorrectLocation: letter == gameState.word?[i],
+            wordContainsLetter: gameState.word?.contains(letter) ?? false,
+          ),
+        ),
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: guess.characters.map(
-        (letter) {
-          final letterIndex = guess.characters.toList().indexOf(letter);
-
-          return Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: LetterTile(
-              letter,
-              isInCorrectLocation: letter == gameState.word?[letterIndex],
-              wordContainsLetter: gameState.word?.contains(letter) ?? false,
-            ),
-          );
-        },
-      ).toList(),
+      children: letters,
     );
   }
 }

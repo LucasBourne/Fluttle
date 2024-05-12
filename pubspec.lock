@@ -451,6 +451,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.1"
+  scrabble_word_checker:
+    dependency: "direct main"
+    description:
+      name: scrabble_word_checker
+      sha256: bd6ef301be748317c4c7c6542a80fba6d5f6b487be9817805b6fa15bcdbd9e42
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.8"
   shelf:
     dependency: transitive
     description:
