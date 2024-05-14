@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fluttle/repos/random_word_interface.dart';
 import 'package:fluttle/state/game_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,16 +20,27 @@ class GameStateNotifier extends StateNotifier<GameState> {
     );
   }
 
-  void submitGuess([String? guess]) {
+  void submitGuess({
+    required void Function(String word) onLose,
+    required void Function(int rounds) onWin,
+    String? guess,
+    VoidCallback? onInvalidWord,
+  }) {
     if (state.word == null) {
       initialiseGame();
     }
     final existingGuesses = List<String>.from(state.guesses);
 
+    if (guess != null && guess.length < 5) {
+      onInvalidWord?.call();
+      return;
+    }
+
     final guessToSubmit =
         guess?.substring(0, 5) ?? _randomWordRepo.generateRandomWord();
 
     if (!_wordChecker.isValidWord(guessToSubmit)) {
+      onInvalidWord?.call();
       return;
     }
 
@@ -40,17 +53,29 @@ class GameStateNotifier extends StateNotifier<GameState> {
       final guessLetter = guessToSubmit[i];
       if (state.word![i] == guessLetter) {
         newSubmittedKeys[greenKeys]!.add(guessLetter);
+        if (newSubmittedKeys[yellowKeys]!.contains(guessLetter)) {
+          newSubmittedKeys[yellowKeys]!.remove(guessLetter);
+        }
       } else if (state.word!.contains(guessLetter)) {
-        newSubmittedKeys[yellowKeys]!.add(guessLetter);
+        if (guessLetter.allMatches(state.word!).length >
+            newSubmittedKeys[yellowKeys]!
+                .where((key) => key == guessLetter)
+                .length) {
+          newSubmittedKeys[yellowKeys]!.add(guessLetter);
+        }
       } else {
         newSubmittedKeys[blackKeys]!.add(guessLetter);
       }
     }
-    // if (guess == state.word) {
-    //   state = GameState.win();
-    // } else if (state.guesses.length >= 6) {
-    //   state = GameState.lose();
-    // }
+    if (guess == state.word) {
+      onWin.call(state.guesses.length);
+      state = GameState.win();
+      return;
+    } else if (state.guesses.length >= 6) {
+      onLose.call(state.word!);
+      state = GameState.lose();
+      return;
+    }
     state = GameState.inProgress(
       word: state.word!,
       guesses: existingGuesses,

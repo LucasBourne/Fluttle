@@ -41,7 +41,29 @@ class MyHomePage extends HookConsumerWidget {
     return Scaffold(
       body: GameBoard(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(gameStateNotifierProvider.notifier).submitGuess(),
+        onPressed: () =>
+            ref.read(gameStateNotifierProvider.notifier).submitGuess(
+          onLose: (word) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'You lost! The word was: \'$word\'',
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          onWin: (guessCount) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'You won! It took you $guessCount guesses.',
+                ),
+                backgroundColor: Colors.green,
+              ),
+            );
+          },
+        ),
         tooltip: 'Stuck? Try a random word',
         child: const Icon(Icons.casino_rounded),
       ),

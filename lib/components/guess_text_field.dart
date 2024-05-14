@@ -10,6 +10,7 @@ class GuessTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       maxLength: 5,
+      decoration: const InputDecoration(counterText: ''),
     );
   }
 }

@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttle/components/keyboard.dart';
-import 'package:fluttle/components/text_field.dart';
+import 'package:fluttle/components/guess_text_field.dart';
 import 'package:fluttle/components/word_board.dart';
 import 'package:fluttle/state/providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -51,12 +50,42 @@ class GameBoard extends HookConsumerWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  ref
-                      .read(gameStateNotifierProvider.notifier)
-                      .submitGuess(_controller.value.text);
+                  ref.read(gameStateNotifierProvider.notifier).submitGuess(
+                        guess: _controller.value.text,
+                        onInvalidWord: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please enter a valid 5 letter word',
+                              ),
+                              backgroundColor: Colors.amber,
+                            ),
+                          );
+                        },
+                        onLose: (word) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'You lost! The word was: \'$word\'',
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        },
+                        onWin: (guessCount) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'You won! It took you $guessCount guesses.',
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+                      );
                   _controller.clear();
                 },
-                child: Text('submit'),
+                child: const Text('submit'),
               )
             ],
           ),

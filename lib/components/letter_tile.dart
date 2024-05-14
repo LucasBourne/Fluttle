@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LetterTile extends StatelessWidget {
-  const LetterTile(this.letter, {super.key, required this.wordContainsLetter, required this.isInCorrectLocation});
+  const LetterTile(
+    this.letter, {
+    super.key,
+    required this.wordContainsLetter,
+    required this.isInCorrectLocation,
+  });
 
   final String letter;
   final bool wordContainsLetter;
