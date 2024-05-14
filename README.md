@@ -7,5 +7,3 @@ Planned features include:
 - Adaptable grid size - change how long the target word is
 - Unlimited mode - keep playing until you guess the word
 - Stats - Rolling totals/averages
-
-# fluttle
