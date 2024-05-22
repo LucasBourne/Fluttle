@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'game_state.freezed.dart';
 
@@ -5,30 +6,29 @@ part 'game_state.freezed.dart';
 class GameState with _$GameState {
   const factory GameState({
     String? word,
+    SubmittedKeys? submittedKeys,
     @Default([]) List<String> guesses,
-    @Default({
-      greenKeys: [],
-      yellowKeys: [],
-      blackKeys: [],
-    })
-    Map<String, List<String>> submittedKeys,
   }) = _GameState;
 
-  factory GameState.initial() => const GameState();
+  factory GameState.initial() => GameState();
   factory GameState.inProgress({
     required String word,
     List<String> guesses = const [],
-    Map<String, List<String>> submittedKeys = const {
-      greenKeys: [],
-      yellowKeys: [],
-      blackKeys: [],
-    },
+    SubmittedKeys submittedKeys = const SubmittedKeys(),
   }) =>
       GameState(word: word, guesses: guesses, submittedKeys: submittedKeys);
-  factory GameState.win() => const GameState();
-  factory GameState.lose() => const GameState();
+  factory GameState.win() => GameState();
+  factory GameState.lose() => GameState();
 }
 
-const greenKeys = 'greenKeys';
-const yellowKeys = 'yellowKeys';
-const blackKeys = 'blackKeys';
+class SubmittedKeys {
+  const SubmittedKeys({
+    this.greenKeys = const [],
+    this.yellowKeys = const [],
+    this.blackKeys = const [],
+  });
+
+  final List<String> greenKeys;
+  final List<String> yellowKeys;
+  final List<String> blackKeys;
+}

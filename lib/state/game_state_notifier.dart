@@ -16,7 +16,6 @@ class GameStateNotifier extends StateNotifier<GameState> {
     state = GameState.inProgress(
       word: _randomWordRepo.generateRandomWord(),
       guesses: [],
-      submittedKeys: {greenKeys: [], yellowKeys: [], blackKeys: []},
     );
   }
 
@@ -46,25 +45,21 @@ class GameStateNotifier extends StateNotifier<GameState> {
 
     existingGuesses.add(guessToSubmit);
 
-    final newSubmittedKeys =
-        Map<String, List<String>>.from(state.submittedKeys);
+    final newGreenKeys =
+        List<String>.from(state.submittedKeys?.greenKeys ?? []);
+    final newYellowKeys =
+        List<String>.from(state.submittedKeys?.yellowKeys ?? []);
+    final newBlackKeys =
+        List<String>.from(state.submittedKeys?.blackKeys ?? []);
 
     for (var i = 0; i < guessToSubmit.length; i++) {
       final guessLetter = guessToSubmit[i];
       if (state.word![i] == guessLetter) {
-        newSubmittedKeys[greenKeys]!.add(guessLetter);
-        if (newSubmittedKeys[yellowKeys]!.contains(guessLetter)) {
-          newSubmittedKeys[yellowKeys]!.remove(guessLetter);
-        }
+        newGreenKeys.add(guessLetter);
       } else if (state.word!.contains(guessLetter)) {
-        if (guessLetter.allMatches(state.word!).length >
-            newSubmittedKeys[yellowKeys]!
-                .where((key) => key == guessLetter)
-                .length) {
-          newSubmittedKeys[yellowKeys]!.add(guessLetter);
-        }
+        newYellowKeys.add(guessLetter);
       } else {
-        newSubmittedKeys[blackKeys]!.add(guessLetter);
+        newBlackKeys.add(guessLetter);
       }
     }
     if (guess == state.word) {
@@ -79,7 +74,11 @@ class GameStateNotifier extends StateNotifier<GameState> {
     state = GameState.inProgress(
       word: state.word!,
       guesses: existingGuesses,
-      submittedKeys: newSubmittedKeys,
+      submittedKeys: SubmittedKeys(
+        greenKeys: newGreenKeys,
+        yellowKeys: newYellowKeys,
+        blackKeys: newBlackKeys,
+      ),
     );
   }
 }

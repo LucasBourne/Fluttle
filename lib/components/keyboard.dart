@@ -14,30 +14,36 @@ class Keyboard extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildTopRow(state),
-        _buildMiddleRow(state),
-        _buildBottomRow(state),
+        _buildTopRow(context, state),
+        _buildMiddleRow(context, state),
+        _buildBottomRow(context, state),
       ],
     );
   }
 
-  Widget _buildTopRow(GameState state) {
+  Widget _buildTopRow(BuildContext context, GameState state) {
     final letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
-    return _buildRow(letters, state);
+    return _buildRow(context, letters, state);
   }
 
-  Widget _buildMiddleRow(GameState state) {
+  Widget _buildMiddleRow(BuildContext context, GameState state) {
     final letters = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
-    return _buildRow(letters, state, leftOffset: 25);
+    return _buildRow(context, letters, state, leftOffset: 25);
   }
 
-  Widget _buildBottomRow(GameState state) {
+  Widget _buildBottomRow(BuildContext context, GameState state) {
     final letters = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
-    return _buildRow(letters, state, leftOffset: 50);
+    return _buildRow(context, letters, state, leftOffset: 50);
   }
 
-  Widget _buildRow(List<String> letters, GameState state,
-      {double? leftOffset}) {
+  Widget _buildRow(
+    BuildContext context,
+    List<String> letters,
+    GameState state, {
+    double? leftOffset,
+  }) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -47,8 +53,8 @@ class Keyboard extends HookConsumerWidget {
               (letter) => Padding(
                 padding: const EdgeInsets.all(2),
                 child: Container(
-                  width: 65,
-                  height: 85,
+                  width: screenSize.width / 12,
+                  height: screenSize.height / 19,
                   decoration: BoxDecoration(
                     color: _getColor(letter, state) ?? Colors.white,
                     border: Border.all(
@@ -75,11 +81,11 @@ class Keyboard extends HookConsumerWidget {
   }
 
   Color? _getColor(String letter, GameState state) {
-    if (state.submittedKeys[greenKeys]?.contains(letter) ?? false) {
+    if (state.submittedKeys?.greenKeys.contains(letter) ?? false) {
       return Colors.green;
-    } else if (state.submittedKeys[yellowKeys]?.contains(letter) ?? false) {
+    } else if (state.submittedKeys?.yellowKeys.contains(letter) ?? false) {
       return Colors.amber;
-    } else if (state.submittedKeys[blackKeys]?.contains(letter) ?? false) {
+    } else if (state.submittedKeys?.blackKeys.contains(letter) ?? false) {
       return Colors.grey;
     }
 

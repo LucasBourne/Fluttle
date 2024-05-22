@@ -25,7 +25,7 @@ void main() {
             const GameState(
               word: 'house',
               guesses: [],
-              submittedKeys: {'greenKeys': [], 'yellowKeys': [], 'blackKeys': []},
+              submittedKeys: SubmittedKeys(),
             ),
           );
         },
