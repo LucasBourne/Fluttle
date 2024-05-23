@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttle/state/providers.dart';
 import 'package:fluttle/views/game_board.dart';
+import 'package:fluttle/views/home_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
@@ -30,43 +31,6 @@ class MyHomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useState(
-      () {
-        ref.read(gameStateNotifierProvider.notifier).initialiseGame();
-
-        return null;
-      },
-    );
-
-    return Scaffold(
-      body: GameBoard(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            ref.read(gameStateNotifierProvider.notifier).submitGuess(
-          onLose: (word) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'You lost! The word was: \'$word\'',
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
-          },
-          onWin: (guessCount) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'You won! It took you $guessCount guesses.',
-                ),
-                backgroundColor: Colors.green,
-              ),
-            );
-          },
-        ),
-        tooltip: 'Stuck? Try a random word',
-        child: const Icon(Icons.casino_rounded),
-      ),
-    );
+    return const HomeScreen();
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class GuessTextField extends StatelessWidget {
-  const GuessTextField(this.controller, {super.key});
+  const GuessTextField(this.controller, this.onSubmitted, {super.key});
 
   final TextEditingController controller;
+  final VoidCallback onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +12,8 @@ class GuessTextField extends StatelessWidget {
       controller: controller,
       maxLength: 5,
       decoration: const InputDecoration(counterText: ''),
+      onSubmitted: (_) => onSubmitted(),
+      autofocus: true,
     );
   }
 }

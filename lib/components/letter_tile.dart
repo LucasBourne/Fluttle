@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LetterTile extends StatelessWidget {
-  const LetterTile(
-    this.letter, {
-    super.key,
-    required this.wordContainsLetter,
-    required this.isInCorrectLocation,
-  });
+  const LetterTile(this.letter, {super.key, required this.color});
 
   final String letter;
-  final bool wordContainsLetter;
-  final bool isInCorrectLocation;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +12,12 @@ class LetterTile extends StatelessWidget {
       width: 75,
       height: 75,
       decoration: BoxDecoration(
-        color: _color,
+        color: color,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       child: Center(
         child: Text(letter),
       ),
     );
-  }
-
-  Color? get _color {
-    if (isInCorrectLocation) {
-      return Colors.green;
-    } else if (wordContainsLetter) {
-      return Colors.amber;
-    } else {
-      return Colors.black12;
-    }
   }
 }

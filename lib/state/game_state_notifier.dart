@@ -22,6 +22,7 @@ class GameStateNotifier extends StateNotifier<GameState> {
   void submitGuess({
     required void Function(String word) onLose,
     required void Function(int rounds) onWin,
+    required VoidCallback onValidWord,
     String? guess,
     VoidCallback? onInvalidWord,
   }) {
@@ -35,13 +36,18 @@ class GameStateNotifier extends StateNotifier<GameState> {
       return;
     }
 
-    final guessToSubmit =
-        guess?.substring(0, 5) ?? _randomWordRepo.generateRandomWord();
+    final guessToSubmit = (guess?.substring(0, 5) ??
+            _randomWordRepo.generateRandomWord(
+              invalidLetters: state.submittedKeys?.blackKeys,
+            ))
+        .toLowerCase();
 
     if (!_wordChecker.isValidWord(guessToSubmit)) {
       onInvalidWord?.call();
       return;
     }
+
+    onValidWord.call();
 
     existingGuesses.add(guessToSubmit);
 
@@ -62,7 +68,7 @@ class GameStateNotifier extends StateNotifier<GameState> {
         newBlackKeys.add(guessLetter);
       }
     }
-    if (guess == state.word) {
+    if (guessToSubmit == state.word) {
       onWin.call(state.guesses.length);
       state = GameState.win();
       return;
